@@ -63,7 +63,7 @@ public class WordCountQueueConsumer implements Runnable {
                 ConcurrentHashMap<String, AtomicLong> sliceWordCountMap = wordCountQueue.poll();
                 combineMap(wordCountMap, sliceWordCountMap);
             }
-            System.out.println("------>>>>>wordCountQueueConsumer current dataMap: " + wordCountMap.size());
+            System.out.println("------>>>>>wordCountQueueConsumer wait for consume, try poll data every second, current dataMap size: " + wordCountMap.size());
             //System.out.println("current countMap: " + wordCountMap);
             // 如果是空的,休息一秒再统计
             try {

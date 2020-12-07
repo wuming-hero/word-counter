@@ -45,7 +45,7 @@ public class FileQueueConsumer implements Runnable {
                 BigFileReader bigFileReader = builder.build();
                 bigFileReader.countWord();
             }
-            System.out.println("---------fileQueueConsumer, 每5秒/次尝试从文件队列读取文件---------");
+            System.out.println("---------fileQueueConsumer wait for consume, try poll file every 5 seconds---------");
             // 如果是空的,休息5秒再尝试读取
             try {
                 Thread.sleep(5000);

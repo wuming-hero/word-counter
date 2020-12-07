@@ -45,7 +45,7 @@ public class FileFailSliceQueueConsumer implements Runnable {
                 // 直接调用切片统计数据
                 bigFileReader.countWordForSlice();
             }
-            System.out.println("++++++++fileFailSliceQueueConsume+++++++++++++++");
+            System.out.println("++++++++fileFailSliceQueueConsumer wait for consume, try poll slice every 5 seconds+++++++++++++++");
             // 如果是空的,休息10秒再统计
             try {
                 Thread.sleep(10000);

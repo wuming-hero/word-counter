@@ -117,7 +117,7 @@ public class BigFileReader {
             // 关闭线程池
             this.executorService.shutdown();
             System.out.println("----<<<<分片读取提交完成");
-            // 等切片处理完
+            // 等当前文件所有的切片处理完
             latch.await();
             System.out.println("<<<<----分片读取完成");
             // 当前文件处理完后，将失败的切片放入列表，后面重新计算
