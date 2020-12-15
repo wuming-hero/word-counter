@@ -1,4 +1,4 @@
-评测题目：现在电子图书馆中有10亿本电子书，这都是英文书。这些英文书有书名和出版日期两个属性，请实现以下功能：
+如题：现在电子图书馆中有10亿本电子书，这都是英文书。这些英文书有书名和出版日期两个属性，请实现以下功能：
 
 1. 我们想要计算出来整个电子图书馆中每个英文单词出现的次数，比如老人与海这本书里，有my home这样的，我需要计算出my和home这些单词出现的次数。
 2. 并且在大屏幕上"实时"展示计算结果。也就是说我在计算过程中的任何时间，都有可能需要看当前每个英文单词出现的次数。
@@ -11,7 +11,7 @@
 通过`FileVisitor`获取全部文件路径放入线程安全的无界队列`ConcurrentLinkedQueue<String> filePathQueue`中；对于增量数据，通过`java.nio.file.WatchService`监听目标文件夹，如果有新增的有效的目标文件，通过`filePathQueue.offer(T)`追回到队列尾部。使用多线程通过`filePathQueue.poll()`方法获取文件路径，构建`BigFileReader`对象，调用`BigFileReader.countWord()`进行统计。
 2. 大文件读取类`BigFileReader`
 `BigFileReader`类的主要方法分为切片和切片读取统计两个方法。文件大小和线程数量对文件进切片，则每个切片大小约等于`file.length/thread.size`。
-使用多线程对每个切片读取，每个切片读取的内容单独放入`ConcurrentHashMap<String, AtomicLong> sliceWordCountMap`，key为单词，value为线程安全的次数。每个切片统计成功，放入全局统计队列`ConcurrentLinkedQueue<ConcurrentHashMap<String, AtomicLong>> wordCountQueue`中；如果统计失败，则放入`failSliceSet`集合中，每个文件多线程操作通过`CountDownLatch`进行统一管理，当前文件的全部线程结束后，关闭文件注，处理队列。将失败的切片信息放入失败队列``。
+使用多线程对每个切片读取，每个切片读取的内容单独放入`ConcurrentHashMap<String, AtomicLong> sliceWordCountMap`，key为单词，value为线程安全的次数。每个切片统计成功，放入全局统计队列`ConcurrentLinkedQueue<ConcurrentHashMap<String, AtomicLong>> wordCountQueue`中；如果统计失败，则放入`failSliceSet`集合中，每个文件多线程操作通过`CountDownLatch`进行统一管理，当前文件的全部线程结束后，关闭文件注，处理队列。将失败的切片信息放入失败队列`ConcurrentLinkedQueue<BigFileReader> fileFailSliceQueue`。
 3. 失败的切片队列`ConcurrentLinkedQueue<BigFileReader> fileFailSliceQueue`处理  
 别起线程对失败的切片队列`ConcurrentLinkedQueue<BigFileReader> fileFailSliceQueue`进行消费，清理费的主要功能还是调用`BigFileReader.countWordForSlice()`进行统计。
 4. 全局统计队列`ConcurrentLinkedQueue<ConcurrentHashMap<String, AtomicLong>> wordCountQueue` 处理
