@@ -39,3 +39,19 @@
 #### 4. 全局数据统计队列`WordCountQueue`及对应的消费类 `WordCountQueueConsumer`
 1. `WordCountQueue`队列中的每个元素为`ConcurrentHashMap<String, AtomicLong>`，数据为单个文件切片的单词统计数据, key 为单词内容，value为原子安全的次数。
 2. `WordCountQueueConsumer`中循环遍历单个切片的单词统计数据，总统计数据`ConcurrentHashMap<String, AtomicLong> wordCountMap`通过key进行判断，如果该单词已存在，则使用线程安全的`addAndGet()`进行增加次数；如果单词不存在，调用`putIfAbsent`进行初始化。如此，则`wordCountMap`中的数据则为目标数据。直接获取展示即可。
+
+## 参考文档
+### 文件读取
+[Java多线程读取大文件及示例](https://blog.csdn.net/u012229449/article/details/105221727)  
+[Java多线程读取大文件示例](https://github.com/yongzhidai/ToolClass/blob/master/src/main/java/cn/dyz/tools/file/BigFileReader.java)  
+[深入浅出MappedByteBuffer](https://www.jianshu.com/p/f90866dcbffc)  
+[java高效文件流读写操作详解](https://www.jb51.net/article/165007.htm)  
+[java多线程进行大批量Excel数据导入实现方案？](https://www.zhihu.com/question/23258804)
+
+### 文件监听
+[文件变更监听](https://blog.csdn.net/guanmao4322/article/details/82730404)
+
+### 知识点
+[JAVA多线程之间共享数据BlockingQueue介绍](https://www.cnblogs.com/dragonsuc/p/5167285.html)  
+[ConcurrentLinkedQueue使用和方法介绍](https://blog.csdn.net/z69183787/article/details/81064982)  
+[Java并发编程之ConcurrentLinkedQueue详解](https://blog.csdn.net/qq_38293564/article/details/80798310)
